@@ -13,6 +13,11 @@ public class GameServer {
     private boolean isPlayer1Win;
     private boolean isPlayer2Win;
     private boolean isDraw;
+    
+    public static void main(String[] args) {
+        GameServer gs = new GameServer();
+        gs.acceptConnection();
+    }
 
     public GameServer(){
         numPlayers = 0;
@@ -127,10 +132,5 @@ public class GameServer {
                 dataOut.flush();
             }catch(Exception e){e.printStackTrace();};
         }
-    }
-
-    public static void main(String[] args) {
-        GameServer gs = new GameServer();
-        gs.acceptConnection();
     }
 }

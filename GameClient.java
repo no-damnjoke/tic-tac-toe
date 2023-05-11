@@ -16,7 +16,11 @@ public class GameClient {
     private boolean isDraw;
     private boolean isOpponentWin;
     
-
+    public static void main(String[] args) {
+        GameClient client = new GameClient();
+        client.connectToServer();
+        client.submitUsername();
+    }
 
     public GameClient(){
         gui = new ClientGUI();
@@ -234,10 +238,6 @@ public class GameClient {
         }catch(Exception e){e.printStackTrace();};
     }
 }
-    public static void main(String[] args) {
-        GameClient client = new GameClient();
-        client.connectToServer();
-        client.submitUsername();
-    }
+
 }
         
