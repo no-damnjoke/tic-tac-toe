@@ -24,7 +24,6 @@ java GameServer
 4. Compile the GameClient.java file by running the following command:
 ```
 javac GameClient.java
-
 ```
 5. Once the file is compiled, run the GameClient.java file by running the following command:
 ```
