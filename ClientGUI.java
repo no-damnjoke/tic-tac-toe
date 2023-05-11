@@ -39,24 +39,4 @@ public class ClientGUI {
     public void displayDisconnectedMessage(){
         JOptionPane.showMessageDialog(mainFrame, "Game Ends. One of the player left");
     }
-
 }
-
-
-//     public void changeGUI(GameStatus gameStatus){
-//         if (gameStatus.checkGameStarted()){
-//             gameStatus.setGameStarted(false);
-
-//         }
-//         else if (!gameStatus.checkIsNamed()){
-//             System.out.println("Hello");
-//             setUsername(mainPanel, messageTitle);
-//             gameStatus.setIsNamed(true);
-//         }
-//         else if (gameStatus.checkPlayerTurn()){
-//             if (gameStatus.getFreq() > 0){
-//                 messageTitle.setText("Your opponent has moved, now is your turn.");
-//             }
-//         }
-//     }
-// }

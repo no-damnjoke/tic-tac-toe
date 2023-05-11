@@ -7,11 +7,11 @@ public class GridPanel extends JPanel{
     public GridPanel(){
         GridLayout grid = new GridLayout(3, 3);
         for (int i = 0; i < 9; i++){
-                gridButtons[i] = new JButton();
-                gridButtonsStyling(gridButtons[i]);
-                super.add(gridButtons[i]);
-                gridButtons[i].setEnabled(false);
-            }
+            gridButtons[i] = new JButton();
+            gridButtonsStyling(gridButtons[i]);
+            super.add(gridButtons[i]);
+            gridButtons[i].setEnabled(false);
+        }
         super.setLayout(grid);
     }
 

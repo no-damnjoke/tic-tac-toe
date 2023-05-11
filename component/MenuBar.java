@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class MenuBar extends JMenuBar{
-
     public MenuBar (JFrame frame){
         final JMenu controlMenu = new JMenu("Control");
         final JMenu helpMenu = new JMenu("Help");

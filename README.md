@@ -31,4 +31,4 @@ javac GameClient.java
 java GameClient
 ```
 
-6. Repeat Step 3 - 5 for the second player in the game
+6. Repeat Step 3 - 5 for the second player in the game.

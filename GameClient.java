@@ -165,7 +165,6 @@ public class GameClient {
         && !mark4.isEmpty() && !mark5.isEmpty() && !mark6.isEmpty() && !mark7.isEmpty() && !mark8.isEmpty() ){
             isDraw = true;
         }
-
     }
     private class ClientSideConnection{
         private Socket socket;

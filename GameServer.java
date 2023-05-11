@@ -95,7 +95,8 @@ public class GameServer {
                             }catch (Exception e){
                                 player2.socket.close();
                                 System.exit(0);}
-                    }else{
+                    }
+                    else{
                         try{
                             player2GridPos = dataIn.readInt();
                             isPlayer2Win = dataIn.readBoolean();

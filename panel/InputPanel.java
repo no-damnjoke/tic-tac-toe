@@ -31,5 +31,4 @@ public class InputPanel extends JPanel{
     public void setButtonEnable(Boolean isEnable){
         submitButton.setEnabled(isEnable);
     }
-
 }
