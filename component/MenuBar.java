@@ -13,6 +13,7 @@ public class MenuBar extends JMenuBar{
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 frame.dispose();
+                System.exit(0);
             }
         });
         instructionItem.addActionListener(new ActionListener() {

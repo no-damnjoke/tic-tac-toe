@@ -1,7 +1,8 @@
 package panel;
-
 import javax.swing.*;
 import java.awt.*;
+
+
 public class MainPanel extends JPanel{
     public GridPanel gridPanel = new GridPanel();
     public InputPanel inputPanel = new InputPanel();
