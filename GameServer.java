@@ -13,16 +13,12 @@ public class GameServer {
     private boolean isPlayer1Win;
     private boolean isPlayer2Win;
     private boolean isDraw;
-    private boolean isPlayer1Disconnected;
-    private boolean isPlayer2Disconnected;
 
     public GameServer(){
         numPlayers = 0;
         isPlayer1Win = false;
         isPlayer2Win = false;
         isDraw = false;
-        isPlayer1Disconnected = false;
-        isPlayer2Disconnected = false;
         latch = new CountDownLatch(2);
         try{
             ss = new ServerSocket(9999);
@@ -85,18 +81,14 @@ public class GameServer {
                 sendCanStart(true);
                 while (true){
                     if (playerID == 1){
-                            try{
-                                player1GridPos = dataIn.readInt();
-                                isPlayer1Win = dataIn.readBoolean();
-                                isDraw = dataIn.readBoolean();
-                                player2.sendGridPos(player1GridPos);
-                                player2.sendResult(isPlayer1Win);
-                               
-                            }
-                            catch (Exception e){
-                                isPlayer1Disconnected = true;
+                        try{
+                            player1GridPos = dataIn.readInt();
+                            isPlayer1Win = dataIn.readBoolean();
+                            isDraw = dataIn.readBoolean();
+                            player2.sendGridPos(player1GridPos);
+                            player2.sendResult(isPlayer1Win);   
+                            }catch (Exception e){
                                 player2.socket.close();
-                                ss.close();
                                 System.exit(0);}
                     }else{
                         try{
@@ -107,28 +99,17 @@ public class GameServer {
                             player1.sendResult(isPlayer2Win);
                         }
                         catch (Exception e){
-                            isPlayer2Disconnected = true;
                             player1.socket.close();
-                            ss.close();
                             System.exit(0);}
                     }
-
                 }
             }catch(Exception e){e.printStackTrace();};
         }
 
         public void sendGridPos(int gridPos){
             try{
-                if (isPlayer1Disconnected || isPlayer2Disconnected){
-                    dataOut.writeInt(-1);
-                    dataOut.flush();
-                }
-                else{
-                    dataOut.writeInt(gridPos);
-                    dataOut.flush();
-                }
-
-
+                dataOut.writeInt(gridPos);
+                dataOut.flush();
             }catch(Exception e){e.printStackTrace();};
         }
         public void sendResult(boolean isWin){
@@ -146,7 +127,6 @@ public class GameServer {
                 dataOut.flush();
             }catch(Exception e){e.printStackTrace();};
         }
-
     }
 
     public static void main(String[] args) {

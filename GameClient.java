@@ -4,7 +4,6 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GameClient {
-    // private GameStatus gameStatus;
     private ClientSideConnection csc;
     private ClientGUI gui;
     private boolean buttonsEnabled;
@@ -81,23 +80,22 @@ public class GameClient {
                 buttonsEnabled = false;
                 toggleButtons();
                 for (int i = 0; i <9; i++){
-                        if (button == gui.mainPanel.gridPanel.gridButtons[i]){
-                            board[i] = myMark;
-                            csc.sendGridPos(i);
-                            checkResult();
-                            csc.sendResult();
-                            if (isWin){
-                                gui.displayWinMessage();
-                                System.exit(0);
-                            }
-                            else if (isDraw){
-                                gui.displayDrawMessage();
-                                System.exit(0);
-
-                            }
-                            break;
+                    if (button == gui.mainPanel.gridPanel.gridButtons[i]){
+                        board[i] = myMark;
+                        csc.sendGridPos(i);
+                        checkResult();
+                        csc.sendResult();
+                        if (isWin){
+                            gui.displayWinMessage();
+                            System.exit(0);
                         }
+                        else if (isDraw){
+                            gui.displayDrawMessage();
+                            System.exit(0);
+                        }
+                        break;
                     }
+                }
                 Thread t = new Thread(new Runnable(){
                     public void run(){
                         updateTurn();
@@ -113,14 +111,14 @@ public class GameClient {
 
     public void toggleButtons(){
         for (int i = 0; i < 9; i++){
-                if (gui.mainPanel.gridPanel.gridButtons[i].getText().isEmpty()){
-                    gui.mainPanel.gridPanel.gridButtons[i].setEnabled(buttonsEnabled);
-                }
-                else{
-                    gui.mainPanel.gridPanel.gridButtons[i].setEnabled(false);
-                }
+            if (gui.mainPanel.gridPanel.gridButtons[i].getText().isEmpty()){
+                gui.mainPanel.gridPanel.gridButtons[i].setEnabled(buttonsEnabled);
+            }
+            else{
+                gui.mainPanel.gridPanel.gridButtons[i].setEnabled(false);
             }
         }
+    }
 
 
     public void updateTurn(){
@@ -233,10 +231,9 @@ public class GameClient {
             dataOut.flush();
             dataOut.writeBoolean(isDraw);
             dataOut.flush();
-
         }catch(Exception e){e.printStackTrace();};
-        }
     }
+}
     public static void main(String[] args) {
         GameClient client = new GameClient();
         client.connectToServer();
