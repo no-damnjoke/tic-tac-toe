@@ -8,7 +8,7 @@ You can run the tic-tac-toe game on different IDEs. For IDEs such as Visual Stud
 
 Below are the instructions to execute the program on Terminal.
 
-# Terminal
+### Terminal
 1. Compile the GameServer.java file by running the following command:
 ```
 javac GameServer.java
