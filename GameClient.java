@@ -3,25 +3,44 @@ import java.io.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * The GameClient class creates the client application that allows two players to play Tic Tac Toe online.
+ * It contains a main method, which starts the application by creating an instance of the GameClient class,
+ * and calls connectToServer and submitUsername methods.
+ * The class also contains several methods that handle gameplay logic,
+ * such as starting the game, updating the game board, and checking for a win or draw.
+ * 
+ * @author Reyes Mak
+ * @version 1.0
+ * 
+ * */
+
 public class GameClient {
-    private ClientSideConnection csc;
-    private ClientGUI gui;
-    private boolean buttonsEnabled;
-    private int gridPos;
-    private int playerID;
-    private char[] board;
-    private char myMark;
-    private char opponentMark;
-    private boolean isWin;
-    private boolean isDraw;
-    private boolean isOpponentWin;
+    private ClientSideConnection csc; // Connection to the server
+    private ClientGUI gui; // User interface for the game
+    private boolean buttonsEnabled; // Whether or not buttons are enabled
+    private int gridPos; // Grid position
+    private int playerID; // ID of the player
+    private char[] board; // Board representation
+    private char myMark; // Mark for the current player
+    private char opponentMark; // Mark for the other player
+    private boolean isWin; // Whether or not the current player has won
+    private boolean isDraw; // Whether or not the game is a draw
+    private boolean isOpponentWin; // Whether or not the other player has won
     
+    /**
+     * The main method that creates a new GameClient object and connects to the server.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         GameClient client = new GameClient();
         client.connectToServer();
         client.submitUsername();
     }
-
+    /**
+     * Constructs a new GameClient object.
+     */
     public GameClient(){
         gui = new ClientGUI();
         board = new char[9];
@@ -30,10 +49,17 @@ public class GameClient {
         isOpponentWin = false;
     }
 
+    /**
+     * Connects to the server using the ClientSideConnection class.
+     */
     private void connectToServer(){
         csc = new ClientSideConnection();
     }
 
+    /**
+     * Starts the game. Player 1 starts the game first
+     * Player 2 waits for Player 1.
+     */
     public void startGame(){
         if (playerID == 1){
                 buttonsEnabled = true;
@@ -52,7 +78,9 @@ public class GameClient {
 
     }
 
-
+    /**
+     * Submits the user's username to the server and starts the game when the user presses the "Submit" button.
+     */
     public void submitUsername(){
         gui.mainPanel.inputPanel.setButtonListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -75,6 +103,9 @@ public class GameClient {
         });
     }
 
+     /**
+     * Handles the user's turn by waiting for the user to click on a button on the grid in his turn.
+     */
     public void myTurn() {
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -113,6 +144,9 @@ public class GameClient {
         }
     }
 
+   /**
+    * Toggles the buttons on the game board based on their current state and sets the enabled state of empty buttons to the specified value.
+    */
     public void toggleButtons(){
         for (int i = 0; i < 9; i++){
             if (gui.mainPanel.gridPanel.gridButtons[i].getText().isEmpty()){
@@ -124,7 +158,10 @@ public class GameClient {
         }
     }
 
-
+   /**
+    * Waiting for the opponent and change GUI to update the turn.
+    * Show Lose Message if the opponent has won.
+    */
     public void updateTurn(){
         csc.receiveGridPos();
         gui.mainPanel.gridPanel.gridButtons[gridPos].setText(Character.toString(opponentMark));
@@ -144,7 +181,10 @@ public class GameClient {
         }
 
     }
-
+    
+   /**
+    * Check if the player has won or drawn.
+    */
     public void checkResult(){
         String mark0 = gui.mainPanel.gridPanel.gridButtons[0].getText();
         String mark1 = gui.mainPanel.gridPanel.gridButtons[1].getText();
@@ -166,11 +206,19 @@ public class GameClient {
             isDraw = true;
         }
     }
+
+   /**
+    * The ClientSideConnection class represents the connection between the client and the server.
+    */
     private class ClientSideConnection{
+    
         private Socket socket;
         private DataInputStream dataIn;
         private DataOutputStream dataOut;
 
+        /**
+         * Constructs a new ClientSideConnection object and sets up the connection to the server.
+         */
         public ClientSideConnection(){
             try{
                 socket = new Socket("localhost", 9999);
@@ -185,27 +233,29 @@ public class GameClient {
                     myMark = 'O';
                     opponentMark = 'X';
                 }
-            }catch(Exception e){e.printStackTrace();}
-        }
-
-        public void sendGridPos(int gridPos){
-            try{
-                dataOut.writeInt(gridPos);
-                dataOut.flush();
-            }catch(Exception e){e.printStackTrace();};
-        }
-
-        public void receiveGridPos(){
-            try{
-                gridPos = dataIn.readInt();
             }catch(Exception e){
                 e.printStackTrace();
+            }
+        }
+
+       /**
+        * Receives the position of the button that was clicked by the opponent from the server.
+        */
+        public void receiveGridPos(){
+            try{
+             gridPos = dataIn.readInt();
+            }catch(Exception e){
                 gui.displayDisconnectedMessage();
                 buttonsEnabled = false;
                 toggleButtons();
                 e.printStackTrace();
-                System.exit(0);};
+                System.exit(0);
+            }
         }
+
+        /**
+         * Receives the game result from the server.
+         */
         public void receiveResult(){
             try{
                 isOpponentWin = dataIn.readBoolean();
@@ -215,28 +265,60 @@ public class GameClient {
                 buttonsEnabled = false;
                 toggleButtons();
                 e.printStackTrace();
-                System.exit(0);};
+                System.exit(0);
+            }
         }
+
+        /**
+         * Receives a signal from the server indicating that the game can start.
+         */
         public void receiveCanStart(){
             try{
                 dataIn.readBoolean();
-            }catch(Exception e){e.printStackTrace();};
+            }catch(Exception e){
+             e.printStackTrace();
+            }
         }
+
+        /**
+         * Sends the position of the button that was clicked to the server.
+         * @param gridPos the position of the button that was clicked
+         */
+        public void sendGridPos(int gridPos){
+            try{
+                dataOut.writeInt(gridPos);
+                dataOut.flush();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * Sends the name of the player to the server.
+         * @param name the name of the player
+         */
         public void sendName(String name){
             try{
                 dataOut.writeUTF(name);
                 dataOut.flush();
-            }catch(Exception e){e.printStackTrace();};
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
+
+        /**
+         * Sends the game result to the server.
+         */
         public void sendResult(){
             try{
-            dataOut.writeBoolean(isWin);
-            dataOut.flush();
-            dataOut.writeBoolean(isDraw);
-            dataOut.flush();
-        }catch(Exception e){e.printStackTrace();};
+                dataOut.writeBoolean(isWin);
+                dataOut.flush();
+                dataOut.writeBoolean(isDraw);
+                dataOut.flush();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
-}
-
 }
         
